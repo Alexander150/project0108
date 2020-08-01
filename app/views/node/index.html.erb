@@ -1,0 +1,10 @@
+<div class="nodes">
+	<div class="node">
+		<% first_node = Node.find_by(first_node: true) %>
+		<% next_node_id = first_node.next_node %>
+		<div><%= first_node.id %></div>
+		<div><%= first_node.name %></div>
+		<div><%= first_node.description %></div>
+		<div><%= first_node.next_node %></div>
+	</div>
+</div>
