@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  description: MyText
+  next_node: 1
+  prev_node: 1
+  first_node: false
+  last_node: false
+
+two:
+  name: MyString
+  description: MyText
+  next_node: 1
+  prev_node: 1
+  first_node: false
+  last_node: false
