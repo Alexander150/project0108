@@ -1,0 +1,6 @@
+<div class="current-node">
+	<a href="<%= @node.prev_node.nil? ? '/' : @node.prev_node %>"><div class="info"><%= @node.prev_node.nil? ? 'На главный экран' : @node.prev_node %></div></a>
+	<div class="info"><%= @node.name %></div>
+	<div class="info"><%= @node.description %></div>
+	<a href="<%= @node.next_node.nil? ? '/' : @node.next_node %>"><div class="info"><%= @node.next_node.nil? ? 'На главный экран' : @node.next_node %></div></a>
+</div>

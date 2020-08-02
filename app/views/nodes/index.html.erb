@@ -1,0 +1,12 @@
+<div class="nodes">
+	<% @nodes.each do |n| %>
+		<a href="node/<%= n.id %>">
+			<div class="node">
+				<div><%= n.id %></div>
+				<div><%= n.name %></div>
+				<div><%= n.description %></div>
+				<div><%= n.next_node %></div>
+			</div>
+		</a>
+	<% end %>
+</div>

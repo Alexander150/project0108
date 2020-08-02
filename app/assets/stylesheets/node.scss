@@ -14,6 +14,10 @@
 	align-items: center;
 	padding-left: 11%;
 	// justify-content: space-around;
+	a{
+		text-decoration: none;
+		color: black;
+	}
 	.node{
 		// position: absolute;
 		width: 200px;
@@ -22,7 +26,30 @@
 		border: 1px solid black;
 		background: lightblue;
 		display: grid;
-		grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+		grid-template-rows: 1fr 1fr 1fr 1fr;
+		text-align: center;
+	}
+}
+
+.current-node{
+	margin: 0 auto;
+	width: 90vw;
+	height: 100vh;
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr 1fr;
+	grid-template-rows: auto;
+	align-items: center;
+	padding-left: 11%;
+	a{
+		text-decoration: none;
+		color: black;
+	}
+	.info{
+		width: 200px;
+		height: 200px;
+		border-radius: 20px;
+		border: 1px solid black;
+		background: lightblue;
 		text-align: center;
 	}
 }
