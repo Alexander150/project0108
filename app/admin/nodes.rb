@@ -1,15 +1,13 @@
 ActiveAdmin.register Node do
 actions :all, :except => [:destroy]
   menu label: "Узлы"
-  permit_params :name, :description, :next_node, :prev_node, :first_node, :last_node,
-                :current_number
+  permit_params :name, :description, :next_node, :prev_node, :first_node, :last_node
 
   index do
     id_column
     column "Название", :name
     column "Описание", :description
     column "Предыдущий узел", :prev_node
-    column "Данный узел", :current_number
     column "Следущий узел", :next_node
     column "Первый узел", :first_node
     column "Последний узел", :last_node
