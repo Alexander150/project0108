@@ -6,4 +6,6 @@ Rails.application.routes.draw do
   	root 'nodes#index'
 
   	get 'node/:id', to: 'nodes#show'
+
+  	post 'nodes/change', to: 'nodes#change'
 end
