@@ -38,6 +38,8 @@ app.controller('NodeCtrl', ['$scope', function($scope) {
 			})
 			.done(function() {
 				console.log("success");
+				// $scope.getNodes();
+				location.reload();
 			})
 			.fail(function() {
 				console.log("error");

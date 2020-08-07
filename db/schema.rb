@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_01_201004) do
+ActiveRecord::Schema.define(version: 2020_08_07_213408) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -45,9 +45,7 @@ ActiveRecord::Schema.define(version: 2020_08_01_201004) do
     t.string "name"
     t.text "description"
     t.integer "next_node"
-    t.integer "prev_node"
     t.boolean "first_node"
-    t.boolean "last_node"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
