@@ -8,4 +8,5 @@ Rails.application.routes.draw do
   	get 'node/:id', to: 'nodes#show'
 
   	post 'nodes/change', to: 'nodes#change'
+  	get 'nodes/get_nodes_in_order', to: 'nodes#get_nodes_in_order'
 end
