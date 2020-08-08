@@ -16,7 +16,7 @@ ActiveAdmin.register Node do
     f.inputs do
       f.input :name, label: "Название"
       f.input :description, label: "Описание"
-      f.input :next_node, label: "Следущий узел", as: :select, collection: Node.all.map{|n| ["#{n.id}, #{n.name}, #{n.description}"]}
+      f.input :next_node, label: "Следущий узел"#, as: :select, collection: Node.all.map{|n| ["#{n.id}, #{n.name}, #{n.description}"]}
       f.input :first_node, label: "Первый узел"
     end
   end

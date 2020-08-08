@@ -1,3 +1,5 @@
+<svg id="nodes" height="100%" width="100%" style="position: absolute;">
+</svg>
 <div class="nodes" ng-controller="NodeCtrl" ng-init="init()">
 	<div class="node" ng-repeat="node in nodes" id="node_{{ node.id }}" ng-click="change($event)">
 		<div>{{ node.id }}</div>

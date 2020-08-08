@@ -1,6 +1,9 @@
 app.controller('NodeCtrl', ['$scope', function($scope) {
 	$scope.init = function(){
 		$scope.getNodes();
+		setTimeout(function(){
+			$scope.draw($scope.nodes);
+		}, 2000);
 	}
 	$scope.getNodes = function(){
 		$.getJSON("/nodes/get_nodes_in_order", function(res){
@@ -38,7 +41,6 @@ app.controller('NodeCtrl', ['$scope', function($scope) {
 			})
 			.done(function() {
 				console.log("success");
-				// $scope.getNodes();
 				location.reload();
 			})
 			.fail(function() {
@@ -46,6 +48,28 @@ app.controller('NodeCtrl', ['$scope', function($scope) {
 			});
 			$scope.div1 = null;
 			$scope.div2 = null;
+		}
+	}
+
+	$scope.draw = function(nodes){
+		var nextNodes = [];
+		var tops = [];
+		var lefts = [];
+		nextNodes += [nodes[0].id];
+		for (var i = 0; i < nodes.length; i++) {
+			nextNodes += [nodes[i].next_node];
+		}
+		var currentNode;
+		for (var i = 0; i < nextNodes.length; i++) {
+			currentNode = document.getElementById("node_" + nextNodes[i]).getBoundingClientRect();
+			var top = currentNode.top + window.pageYOffset - document.body.clientTop+100;
+			var left = currentNode.left + window.pageXOffset - document.body.clientLeft+100;
+			tops.push(top);
+			lefts.push(left);
+		}
+		for (var i = 0; i < tops.length-1; i++) {
+			var line = "<line class='line' x1='" + Math.round(lefts[i]) + "' y1='" + Math.round(tops[i]) + "' x2='" + Math.round(lefts[i+1]) + "' y2='" + Math.round(tops[i+1]) + "'/>"
+			document.getElementById("nodes").innerHTML += line;
 		}
 	}
 

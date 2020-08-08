@@ -4,6 +4,10 @@
 *{
 	overflow-x: hidden;
 }
+.line{
+	stroke: rgb(255,0,0);
+	stroke-width: 2;
+}
 .nodes{
 	margin: 0 auto;
 	width: 90vw;
@@ -28,6 +32,7 @@
 		display: grid;
 		grid-template-rows: 1fr 1fr 1fr 1fr;
 		text-align: center;
+		z-index: 20;
 	}
 }
 
