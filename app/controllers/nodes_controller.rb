@@ -38,8 +38,6 @@ class NodesController < ApplicationController
 		next_node1_id = next_node1.id if !next_node1.nil?
 		next_node2_id = next_node2.id if !next_node2.nil?
 
-		p Node.find_by(next_node: node1.id.to_s)
-
 		prev_node1 = Node.find_by(next_node: node1.id.to_s)
 		prev_node1_will = node2.id
 		prev_node2 = Node.find_by(next_node: node2.id.to_s)
