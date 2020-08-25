@@ -3,7 +3,7 @@ app.controller('NodeCtrl', ['$scope', function($scope) {
 		$scope.getNodes();
 		setTimeout(function(){
 			$scope.draw($scope.nodes);
-		}, 2000);
+		}, 1500);
 	}
 	$scope.getNodes = function(){
 		$.getJSON("/nodes/get_nodes_in_order", function(res){
@@ -51,25 +51,49 @@ app.controller('NodeCtrl', ['$scope', function($scope) {
 		}
 	}
 
+	$scope.getRandomColor = function() {
+  		var letters = '0123456789ABCDEF';
+  		var color = '#';
+  		for (var i = 0; i < 6; i++) {
+    		color += letters[Math.floor(Math.random() * 16)];
+  		}
+  		return color;
+	}
+
 	$scope.draw = function(nodes){
 		var nextNodes = [];
 		var tops = [];
 		var lefts = [];
-		nextNodes += [nodes[0].id];
 		for (var i = 0; i < nodes.length; i++) {
-			nextNodes += [nodes[i].next_node];
+			nextNodes.push(nodes[i].next_node);
 		}
 		var currentNode;
 		for (var i = 0; i < nextNodes.length; i++) {
-			currentNode = document.getElementById("node_" + nextNodes[i]).getBoundingClientRect();
-			var top = currentNode.top + window.pageYOffset - document.body.clientTop+100;
-			var left = currentNode.left + window.pageXOffset - document.body.clientLeft+100;
-			tops.push(top);
-			lefts.push(left);
-		}
-		for (var i = 0; i < tops.length-1; i++) {
-			var line = "<line class='line' x1='" + Math.round(lefts[i]) + "' y1='" + Math.round(tops[i]) + "' x2='" + Math.round(lefts[i+1]) + "' y2='" + Math.round(tops[i+1]) + "'/>"
-			document.getElementById("nodes").innerHTML += line;
+			if (nextNodes[i] == "") {
+				continue;
+			}
+			var mainCurrentNode = document.getElementById("node_" + nodes[i].id).getBoundingClientRect();
+			var mainTop = mainCurrentNode.top + window.pageYOffset - document.body.clientTop + 100 - i*10;
+			var mainLeft = mainCurrentNode.left + window.pageXOffset - document.body.clientLeft + 100;
+			if (nextNodes[i].length > 2) {
+				var currentNodes = nextNodes[i].split(";");
+				for (var j = 0; j < currentNodes.length; j++) {
+					currentNode = document.getElementById("node_" + parseInt(currentNodes[j])).getBoundingClientRect();
+					var top = currentNode.top + window.pageYOffset - document.body.clientTop + 100 - i*5 + j*30;
+					var left = currentNode.left + window.pageXOffset - document.body.clientLeft + 100;
+					var color = $scope.getRandomColor();
+					var line = "<line style='stroke-width: 2; stroke:" + color + ";' class='line' x1='" + Math.round(mainLeft) + "' y1='" + Math.round(mainTop) + "' x2='" + Math.round(left) + "' y2='" + Math.round(top) + "'/>"
+					document.getElementById("nodes").innerHTML += line;
+
+				}
+			}else{
+				currentNode = document.getElementById("node_" + nextNodes[i]).getBoundingClientRect();
+				var top = currentNode.top + window.pageYOffset - document.body.clientTop+100;
+				var left = currentNode.left + window.pageXOffset - document.body.clientLeft+100;
+				var color = $scope.getRandomColor();
+				var line = "<line style='stroke-width: 2; stroke:" + color + ";' class='line' x1='" + Math.round(mainLeft) + "' y1='" + Math.round(mainTop) + "' x2='" + Math.round(left) + "' y2='" + Math.round(top) + "'/>"
+				document.getElementById("nodes").innerHTML += line;
+			}
 		}
 	}
 
