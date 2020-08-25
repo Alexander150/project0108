@@ -76,6 +76,9 @@ app.controller('NodeCtrl', ['$scope', function($scope) {
 			var mainTop = mainCurrentNode.top + window.pageYOffset - document.body.clientTop + 100 - i*10;
 			var mainLeft = mainCurrentNode.left + window.pageXOffset - document.body.clientLeft + 100;
 			if (nextNodes[i].length > 2) {
+				if (nextNodes[i] == ""){
+					continue;
+				}
 				var currentNodes = nextNodes[i].split(";");
 				for (var j = 0; j < currentNodes.length; j++) {
 					currentNode = document.getElementById("node_" + parseInt(currentNodes[j])).getBoundingClientRect();
