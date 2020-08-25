@@ -76,11 +76,11 @@ app.controller('NodeCtrl', ['$scope', function($scope) {
 			var mainTop = mainCurrentNode.top + window.pageYOffset - document.body.clientTop + 100 - i*10;
 			var mainLeft = mainCurrentNode.left + window.pageXOffset - document.body.clientLeft + 100;
 			if (nextNodes[i].length > 2) {
-				if (nextNodes[i] == ""){
-					continue;
-				}
 				var currentNodes = nextNodes[i].split(";");
 				for (var j = 0; j < currentNodes.length; j++) {
+					if (currentNodes[j] == ""){
+						continue;
+					}
 					currentNode = document.getElementById("node_" + parseInt(currentNodes[j])).getBoundingClientRect();
 					var top = currentNode.top + window.pageYOffset - document.body.clientTop + 100 - i*5 + j*30;
 					var left = currentNode.left + window.pageXOffset - document.body.clientLeft + 100;
@@ -90,6 +90,9 @@ app.controller('NodeCtrl', ['$scope', function($scope) {
 
 				}
 			}else{
+				if (nextNodes[i][nextNodes[i].length-1] == ';'){
+					nextNodes[i] = nextNodes[i].substring(0, nextNodes[i].length - 1);
+				}
 				currentNode = document.getElementById("node_" + nextNodes[i]).getBoundingClientRect();
 				var top = currentNode.top + window.pageYOffset - document.body.clientTop+100;
 				var left = currentNode.left + window.pageXOffset - document.body.clientLeft+100;

@@ -49,18 +49,30 @@ class NodesController < ApplicationController
 
 		# Нашли все предыдущие и следующие ноды для 1 и 2.
 
+		common_arr = prev_node_ids1 & prev_node_ids2
+
+		# Нашли одинаковые элементы 2 массивов, если они есть
+
+		prev_node_ids1 -= common_arr
+		prev_node_ids2 -= common_arr
+
+		# Удалили эти элементы
+
 		if prev_node_ids1 != []
 			prev_node_ids1.each do |pn1|
 				node = Node.find(pn1)
 				next_node = node.next_node.split(";").delete_if {|x| x.to_i == node1.id}
-				node.update(next_node: next_node.join(";") + ";" + node2.id.to_s + ";")
+				node.update(next_node: next_node.join(";") + ";" + node2.id.to_s + ";") if !next_node.include? node2.id.to_s
+				node.update(next_node: next_node.join(";")) if next_node.include? node2.id.to_s
 			end
 		end
+		p Node.find(3)
 		if prev_node_ids2 != []
 			prev_node_ids2.each do |pn2|
 				node = Node.find(pn2)
 				next_node = node.next_node.split(";").delete_if {|x| x.to_i == node2.id}
-				node.update(next_node: next_node.join(";") + ";" + node1.id.to_s + ";")
+				node.update(next_node: next_node.join(";") + ";" + node1.id.to_s + ";") if !next_node.include? node1.id.to_s
+				node.update(next_node: next_node.join(";")) if next_node.include? node1.id.to_s
 			end
 		end
 
@@ -79,12 +91,19 @@ class NodesController < ApplicationController
 
 		# Обновили 1 и 2 нод
 
-		if next_nodes_for_first_node.include? (node2.id)
-			node2.update(next_node: node2.next_node + node1.id.to_s + ";")
+		if next_nodes_for_first_node.include? (node2.id.to_s)
+			node2.update(next_node: node2.next_node + ";" + node1.id.to_s + ";")
 		end
 
-		if next_nodes_for_second_node.include? (node1.id)
-			node1.update(next_node: node1.next_node + node2.id.to_s + ";")
+		if next_nodes_for_second_node.include? (node1.id.to_s)
+			node1.update(next_node: node1.next_node + ";" + node2.id.to_s + ";")
+		end
+
+		if node1.next_node.include? (node1.id.to_s)
+			node1.update(next_node: node1.next_node.gsub(node1.id.to_s + ";",""))
+		end
+		if node2.next_node.include? (node2.id.to_s)
+			node2.update(next_node: node2.next_node.gsub(node2.id.to_s + ";",""))
 		end
 
 		# Если 1 нод содержал ссылку на 2 нод, то добавляем 2 ноду ссылку на 1 нод. Аналогично для 2 нода.
