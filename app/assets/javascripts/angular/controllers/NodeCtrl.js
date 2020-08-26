@@ -27,8 +27,8 @@ app.controller('NodeCtrl', ['$scope', function($scope) {
 			$scope.div2.style.background = 'lightblue';
 			var div11 = $scope.div1.cloneNode(true);
 			var div22 = $scope.div2.cloneNode(true);
-			$scope.div2.parentNode.insertBefore(div11,$scope.div2);
-			$scope.div1.parentNode.insertBefore(div22,$scope.div1);
+			$scope.div2.parentNode.insertBefore(div11, $scope.div2);
+			$scope.div1.parentNode.insertBefore(div22, $scope.div1);
 			$scope.div1.parentNode.removeChild($scope.div1);
 			$scope.div2.parentNode.removeChild($scope.div2);
 			$.ajax({
@@ -60,16 +60,41 @@ app.controller('NodeCtrl', ['$scope', function($scope) {
   		return color;
 	}
 
+	$scope.setLine = function(toStart, toFinish, topOrLeft1, topOrLeft2, fixed, path, leftOrTop){
+		var color = $scope.getRandomColor();
+		var start = toStart + 100;
+		var onePart = Math.abs(toStart - toFinish) / 3;
+		var firstPoint = toStart + onePart;
+		var secondPoint = firstPoint + onePart;
+		var finish = toFinish + 100;
+		if (leftOrTop){
+			path = '<path d="M ' + start + ', ' + topOrLeft1 + ' C ' + firstPoint + ', ' + fixed + ' , ' + secondPoint + ', ' + fixed + ', ' + finish + ', ' + topOrLeft2 + '" style="stroke:' + color + '; stroke-width: 3; fill: none;"/>';
+		}else{
+			path = '<path d="M ' + start + ', ' + topOrLeft1 + ' C ' + fixed + ', ' + firstPoint + ' , ' + fixed + ', ' + secondPoint + ', ' + topOrLeft2 + ', ' + finish + '" style="stroke:' + color + '; stroke-width: 3; fill: none;"/>';
+		}
+		return path
+	}
+
 	$scope.getLine = function(node, nextNode){
 		var mainCurrentNode = document.getElementById("node_" + node).getBoundingClientRect();
-		var mainTop = mainCurrentNode.top + window.pageYOffset - document.body.clientTop + 100 - Math.round(10 - 0.5 + Math.random() * (50 - 10 + 1));
-		var mainLeft = mainCurrentNode.left + window.pageXOffset - document.body.clientLeft + 100;
+		var mainTop = Math.round(mainCurrentNode.top + window.pageYOffset - document.body.clientTop);
+		var mainLeft = Math.round(mainCurrentNode.left + window.pageXOffset - document.body.clientLeft);
 		var currentNode = document.getElementById("node_" + parseInt(nextNode)).getBoundingClientRect();
-		var top = currentNode.top + window.pageYOffset - document.body.clientTop + 100 - Math.round(50 - 0.5 + Math.random() * (100 - 50 + 1)) + Math.round(100 - 0.5 + Math.random() * (150 - 100 + 1));
-		var left = currentNode.left + window.pageXOffset - document.body.clientLeft + 100;
-		var color = $scope.getRandomColor();
-		var line = "<line style='stroke-width: 2; stroke:" + color + ";' class='line' x1='" + Math.round(mainLeft) + "' y1='" + Math.round(mainTop) + "' x2='" + Math.round(left) + "' y2='" + Math.round(top) + "'/>"
-		document.getElementById("nodes").innerHTML += line;
+		var top = Math.round(currentNode.top + window.pageYOffset - document.body.clientTop);
+		var left = Math.round(currentNode.left + window.pageXOffset - document.body.clientLeft);
+		var path;
+		if (mainLeft < left){
+			path = $scope.setLine(mainLeft, left, mainTop, top, 10, path, true);
+		}else if (mainLeft > left){
+			path = $scope.setLine(left, mainLeft, top, mainTop, 10, path, true);
+		}else if (mainLeft == left){
+			if (mainTop < top){
+				path = $scope.setLine(mainTop, top, mainLeft, left, 10, path, false);
+			}else{
+				path = $scope.setLine(top, mainTop, left, mainLeft, 10, path, false);
+			}
+		}
+		document.getElementById("nodes").innerHTML += path;
 	}
 
 	$scope.draw = function(nodes){
