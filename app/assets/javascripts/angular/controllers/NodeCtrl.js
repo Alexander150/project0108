@@ -5,6 +5,7 @@ app.controller('NodeCtrl', ['$scope', function($scope) {
 			$scope.draw($scope.nodes);
 		}, 1500);
 	}
+
 	$scope.getNodes = function(){
 		$.getJSON("/nodes/get_nodes_in_order", function(res){
 			$scope.nodes = res.nodes;
