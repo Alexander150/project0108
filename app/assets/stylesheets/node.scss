@@ -30,27 +30,47 @@
 		text-align: center;
 		z-index: 20;
 	}
-}
-
-.current-node{
-	margin: 0 auto;
-	width: 90vw;
-	height: 100vh;
-	display: grid;
-	grid-template-columns: 1fr 1fr 1fr 1fr;
-	grid-template-rows: auto;
-	align-items: center;
-	padding-left: 11%;
-	a{
-		text-decoration: none;
-		color: black;
-	}
-	.info{
-		width: 200px;
-		height: 200px;
+	.isOk{
+		opacity: 0;
+		z-index: 0;
+		width: 30%;
+		height: 30%;
+		border: 5px solid red;
 		border-radius: 20px;
-		border: 1px solid black;
-		background: lightblue;
-		text-align: center;
+		position: absolute;
+		margin: auto;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: white;
+		color: black;
+		display: grid;
+		grid-template-rows: 1fr 1fr;
+
+		.text{
+			position: relative;
+			margin: 0 auto;
+			top: 20px;
+			font-size: 24px;
+			font-weight: 900;
+		}
+
+		.buttons{
+			display: flex;
+			justify-content: space-around;
+
+			button{
+				width: 40%;
+				height: 50%;
+				font-size: 18px;
+				font-weight: 700;
+				letter-spacing: 2px;
+				text-align: center;
+				background: lightgreen;
+				color: black;
+				border: 2px solid black;
+			}
+		}
 	}
 }

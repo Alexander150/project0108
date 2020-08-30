@@ -13,42 +13,85 @@ app.controller('NodeCtrl', ['$scope', function($scope) {
 		});
 	}
 
-	$scope.div1 = null;
-	$scope.div2 = null;
-	$scope.change = function($event){
-		if ($scope.div1 == null) {
-			$scope.div1 = document.getElementById($event.currentTarget.id);
-			$scope.div1.style.background = 'red';
+	$scope.notOk = function(){
+		$("#isOk").css({
+			'opacity': '0',
+			'z-index': "0"
+		});
+		$("#" + $scope.div1.id).css({
+			'-webkit-transform': 'rotateZ(0deg)',
+			'-ms-transform': 'rotateZ(0deg)',
+			'transform': 'rotateZ(0deg)'
+		});
+		$("#" + $scope.div2.id).css({
+			'-webkit-transform': 'rotateZ(0deg)',
+			'-ms-transform': 'rotateZ(0deg)',
+			'transform': 'rotateZ(0deg)'
+		});
+		$scope.div1 = null;
+		$scope.div2 = null;
+	}
+
+	$scope.isTrue = false;
+	$scope.isOk = function(yesOrNo){
+		if (yesOrNo){
+			$scope.send($scope.div1.id, $scope.div2.id);
+			$("#isOk").css({
+			'opacity': "0",
+			'z-index': "0"
+		});
 		}else{
-			$scope.div2 = document.getElementById($event.currentTarget.id);
-			$scope.div2.style.background = 'yellow';
+			$scope.notOk();
 		}
-		if ($scope.div1 != null && $scope.div2 != null){
-			$scope.div1.style.background = 'lightblue';
-			$scope.div2.style.background = 'lightblue';
-			var div11 = $scope.div1.cloneNode(true);
-			var div22 = $scope.div2.cloneNode(true);
-			$scope.div2.parentNode.insertBefore(div11, $scope.div2);
-			$scope.div1.parentNode.insertBefore(div22, $scope.div1);
-			$scope.div1.parentNode.removeChild($scope.div1);
-			$scope.div2.parentNode.removeChild($scope.div2);
-			$.ajax({
+	}
+
+	$scope.send = function(id1, id2){
+		$.ajax({
 				url: '/nodes/change',
 				type: 'POST',
 				data: {
-					id_1: $scope.div1.id,
-					id_2: $scope.div2.id
+					id_1: id1,
+					id_2: id2
 				},
 			})
 			.done(function() {
 				console.log("success");
-				location.reload();
+				// location.reload();
+				$scope.init();
 			})
 			.fail(function() {
 				console.log("error");
 			});
 			$scope.div1 = null;
 			$scope.div2 = null;
+	}
+
+	$scope.div1 = null;
+	$scope.div2 = null;
+	$scope.change = function($event){
+		if ($scope.div1 == null) {
+			$scope.div1 = document.getElementById($event.currentTarget.id);
+			$("#" + $scope.div1.id).css({
+				'-webkit-transform': 'rotateZ(20deg)',
+				'-ms-transform': 'rotateZ(20deg)',
+				'transform': 'rotateZ(20deg)',
+			});
+		}else{
+			$scope.div2 = document.getElementById($event.currentTarget.id);
+			$("#" + $event.currentTarget.id).css({
+				'-webkit-transform': 'rotateZ(20deg)',
+				'-ms-transform': 'rotateZ(20deg)',
+				'transform': 'rotateZ(20deg)',
+			});
+		}
+		if ($scope.div1.id == $scope.div2.id){
+			return;
+		}
+		if ($scope.div1 != null && $scope.div2 != null){
+			$("#isOk").css({
+				'opacity': "1",
+				'z-index': "100"
+			});
 		}
 	}
 
