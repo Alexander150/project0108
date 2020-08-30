@@ -32,7 +32,6 @@ app.controller('NodeCtrl', ['$scope', function($scope) {
 		$scope.div2 = null;
 	}
 
-	$scope.isTrue = false;
 	$scope.isOk = function(yesOrNo){
 		if (yesOrNo){
 			$scope.send($scope.div1.id, $scope.div2.id);
