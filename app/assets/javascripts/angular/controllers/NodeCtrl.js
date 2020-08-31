@@ -3,15 +3,13 @@ app.controller('NodeCtrl', ['$scope', function($scope) {
 		$scope.div1 = null;
 		$scope.div2 = null;
 		$scope.getNodes();
-		setTimeout(function(){
-			$scope.draw($scope.nodes);
-		}, 1500);
 	}
 
 	$scope.getNodes = function(){
 		$.getJSON("/nodes/get_nodes_in_order", function(res){
 			$scope.nodes = res.nodes;
 			$scope.$apply();
+			$scope.draw($scope.nodes);
 		});
 	}
 
@@ -61,20 +59,20 @@ app.controller('NodeCtrl', ['$scope', function($scope) {
 		var left = Math.round(currentNode.left + window.pageXOffset - document.body.clientLeft);
 		var path;
 		if (mainLeft < left){
-			path = $scope.setLine(mainLeft, left, mainTop, top, 10, path, true);
+			path = $scope.setLine(node, nextNode, mainLeft, left, mainTop, top, 10, path, true);
 		}else if (mainLeft > left){
-			path = $scope.setLine(left, mainLeft, top, mainTop, 10, path, true);
+			path = $scope.setLine(node, nextNode, left, mainLeft, top, mainTop, 10, path, true);
 		}else if (mainLeft == left){
 			if (mainTop < top){
-				path = $scope.setLine(mainTop, top, mainLeft, left, 10, path, false);
+				path = $scope.setLine(node, nextNode, mainTop, top, mainLeft, left, 10, path, false);
 			}else{
-				path = $scope.setLine(top, mainTop, left, mainLeft, 10, path, false);
+				path = $scope.setLine(node, nextNode, top, mainTop, left, mainLeft, 10, path, false);
 			}
 		}
 		document.getElementById("nodes").innerHTML += path;
 	}
 
-	$scope.setLine = function(toStart, toFinish, topOrLeft1, topOrLeft2, fixed, path, leftOrTop){
+	$scope.setLine = function(node, nextNode, toStart, toFinish, topOrLeft1, topOrLeft2, fixed, path, leftOrTop){
 		var color = $scope.getRandomColor();
 		var start = toStart + 100;
 		var onePart = Math.abs(toStart - toFinish) / 3;
@@ -82,9 +80,9 @@ app.controller('NodeCtrl', ['$scope', function($scope) {
 		var secondPoint = firstPoint + onePart;
 		var finish = toFinish + 100;
 		if (leftOrTop){
-			path = '<path d="M ' + start + ', ' + topOrLeft1 + ' C ' + firstPoint + ', ' + fixed + ' , ' + secondPoint + ', ' + fixed + ', ' + finish + ', ' + topOrLeft2 + '" style="stroke:' + color + '; stroke-width: 3; fill: none;"/>';
+			path = '<path ng-click="watch($event)" class="path" id="nodes_' + node + '_' + nextNode + '" d="M ' + start + ', ' + topOrLeft1 + ' C ' + firstPoint + ', ' + fixed + ' , ' + secondPoint + ', ' + fixed + ', ' + finish + ', ' + topOrLeft2 + '" style="stroke:' + color + '; stroke-width: 3; fill: none;"/>';
 		}else{
-			path = '<path d="M ' + start + ', ' + topOrLeft1 + ' C ' + fixed + ', ' + firstPoint + ' , ' + fixed + ', ' + secondPoint + ', ' + topOrLeft2 + ', ' + finish + '" style="stroke:' + color + '; stroke-width: 3; fill: none;"/>';
+			path = '<path ng-click="watch($event)" class="path" id="nodes_' + node + '_' + nextNode + '" d="M ' + start + ', ' + topOrLeft1 + ' C ' + fixed + ', ' + firstPoint + ' , ' + fixed + ', ' + secondPoint + ', ' + topOrLeft2 + ', ' + finish + '" style="stroke:' + color + '; stroke-width: 3; fill: none;"/>';
 		}
 		return path
 	}
@@ -166,5 +164,29 @@ app.controller('NodeCtrl', ['$scope', function($scope) {
 			$scope.div1 = null;
 			$scope.div2 = null;
 	}
+
+	$(document).on('click', 'path', function(){
+		let path = $("#" + this.id);
+		let node1 = $("#node_" + this.id.split("_")[1]);
+		let node2 = $("#node_" + this.id.split("_")[2]);
+		let shadowColor = path.css('stroke');
+		let paths = document.getElementsByClassName("path");
+		let nodes = document.getElementsByClassName("node");
+		for (var i = 0; i < nodes.length; i++) {
+			$("#" + nodes[i].id).css({'box-shadow': 'none'});
+		}
+		node1.css({
+			'box-shadow': '0 0 40px ' + shadowColor,
+		});
+		node2.css({
+			'box-shadow': '0 0 40px ' + shadowColor,
+		});
+	});
+
+	// $(document).on('click', 'body', function(){
+	// 	body.css({
+	// 		'box-shadow': 'none',
+	// 	})
+	// })
 
 }]);
