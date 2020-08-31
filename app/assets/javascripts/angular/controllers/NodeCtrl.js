@@ -80,9 +80,9 @@ app.controller('NodeCtrl', ['$scope', function($scope) {
 		var secondPoint = firstPoint + onePart;
 		var finish = toFinish + 100;
 		if (leftOrTop){
-			path = '<path ng-click="watch($event)" class="path" id="nodes_' + node + '_' + nextNode + '" d="M ' + start + ', ' + topOrLeft1 + ' C ' + firstPoint + ', ' + fixed + ' , ' + secondPoint + ', ' + fixed + ', ' + finish + ', ' + topOrLeft2 + '" style="stroke:' + color + '; stroke-width: 3; fill: none;"/>';
+			path = '<path ng-click="watch($event)" class="path" id="nodes_' + node + '_' + nextNode + '" d="M ' + start + ', ' + topOrLeft1 + ' C ' + firstPoint + ', ' + fixed + ' , ' + secondPoint + ', ' + fixed + ', ' + finish + ', ' + topOrLeft2 + '" style="stroke:' + color + '; stroke-width: 5; fill: none;"/>';
 		}else{
-			path = '<path ng-click="watch($event)" class="path" id="nodes_' + node + '_' + nextNode + '" d="M ' + start + ', ' + topOrLeft1 + ' C ' + fixed + ', ' + firstPoint + ' , ' + fixed + ', ' + secondPoint + ', ' + topOrLeft2 + ', ' + finish + '" style="stroke:' + color + '; stroke-width: 3; fill: none;"/>';
+			path = '<path ng-click="watch($event)" class="path" id="nodes_' + node + '_' + nextNode + '" d="M ' + start + ', ' + topOrLeft1 + ' C ' + fixed + ', ' + firstPoint + ' , ' + fixed + ', ' + secondPoint + ', ' + topOrLeft2 + ', ' + finish + '" style="stroke:' + color + '; stroke-width: 5; fill: none;"/>';
 		}
 		return path
 	}
@@ -172,21 +172,29 @@ app.controller('NodeCtrl', ['$scope', function($scope) {
 		let shadowColor = path.css('stroke');
 		let paths = document.getElementsByClassName("path");
 		let nodes = document.getElementsByClassName("node");
-		for (var i = 0; i < nodes.length; i++) {
-			$("#" + nodes[i].id).css({'box-shadow': 'none'});
+		for (var i = 0; i < paths.length; i++) {
+			$("#" + paths[i].id).css({
+				'transform': 'none'
+			});
 		}
+		for (var i = 0; i < nodes.length; i++) {
+			$("#" + nodes[i].id).css({
+				'box-shadow': 'none',
+				'transform': 'none',
+			});
+		}
+		path.css({
+			'transform': 'translateY(40px)',
+			'filter': 'drop-shadow(3px 3px 2px rgba(0, 0, 0, 1))'
+			// 'filter': 'drop-shadow(10 10 10 ' + shadowColor + ')'
+		});
 		node1.css({
 			'box-shadow': '0 0 40px ' + shadowColor,
+			'transform': 'translateY(40px)'
 		});
 		node2.css({
 			'box-shadow': '0 0 40px ' + shadowColor,
+			'transform': 'translateY(40px)'
 		});
 	});
-
-	// $(document).on('click', 'body', function(){
-	// 	body.css({
-	// 		'box-shadow': 'none',
-	// 	})
-	// })
-
 }]);
