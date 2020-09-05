@@ -66,7 +66,6 @@ class NodesController < ApplicationController
 				node.update(next_node: next_node.join(";")) if next_node.include? node2.id.to_s
 			end
 		end
-		p Node.find(3)
 		if prev_node_ids2 != []
 			prev_node_ids2.each do |pn2|
 				node = Node.find(pn2)
